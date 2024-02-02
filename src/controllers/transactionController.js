@@ -305,7 +305,6 @@ const getSingleTransaction = async (req, res) => {
 };
 const getAnalytics = async (req, res) => {
   // #swagger.tags = ['transaction']
-
   try {
     const data = await Transaction.aggregate([
       {
@@ -348,6 +347,26 @@ const getAnalytics = async (req, res) => {
             },
           },
           totalAmount: 1,
+        },
+      },
+      {
+        $project: {
+          total: {
+            $concat: [
+              "Total in ",
+              "$months",
+              ": ",
+              { $toString: "$totalAmount" },
+            ],
+          },
+        },
+      },
+
+      {
+        $sort: {
+          totalAmount: 1,
+          "_id.year": 1,
+          "_id.month": 1,
         },
       },
     ]);

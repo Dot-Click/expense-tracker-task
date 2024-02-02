@@ -6,13 +6,17 @@ const isAuthenticated = require("../middleware/auth");
 router
   .route("/:categoryId")
   .post(isAuthenticated, transaction.createTransaction);
+
 router.route("/").get(isAuthenticated, transaction.getAllTransactions);
+
 router
   .route("/:transactionId")
   .put(isAuthenticated, transaction.updateTransactions);
+
 router
-  .route("/:transactionId")
+  .route("/single/:transactionId")
   .get(isAuthenticated, transaction.getSingleTransaction);
+
 router.route("/analytics").get(isAuthenticated, transaction.getAnalytics);
 
 module.exports = router;
